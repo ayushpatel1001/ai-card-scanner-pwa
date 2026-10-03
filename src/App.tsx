@@ -5,6 +5,7 @@ import {
   Sparkles,
   Download,
   CheckCircle2,
+  Info,
 } from 'lucide-react';
 import { Header } from './components/Header';
 import { CaptureZone } from './components/CaptureZone';
@@ -312,7 +313,7 @@ function MainApp() {
     setStagingContacts((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
   };
 
-  // Save Contact to IndexedDB & trigger native share / .vcf download
+  // Save Contact to IndexedDB & download standard .vcf for device Contacts import
   const handleSaveToDevice = async (contact: ExtractedContact) => {
     try {
       const stored: StoredContact = {
@@ -324,21 +325,29 @@ function MainApp() {
       await saveContact(stored);
       await refreshStoredContacts();
 
-      // Trigger standard vCard 3.0 export with embedded PHOTO
-      await exportContactVCard(stored, 'share');
+      // Trigger standard vCard 3.0 file download
+      await exportContactVCard(stored, 'download');
 
       // Remove from staging
       setStagingContacts((prev) => prev.filter((c) => c.id !== contact.id));
-      showToast('success', `Saved ${contact.fullName} to contacts!`);
+      showToast('success', `Saved! Tap downloaded ${contact.fullName}.vcf to add to Apple or Google Contacts.`);
     } catch (err: any) {
       showToast('error', 'Failed to save contact: ' + err.message);
     }
   };
 
-  // Export Single vCard without removing from staging
-  const handleExportVCardOnly = (contact: ExtractedContact) => {
-    exportContactVCard(contact, 'download');
-    showToast('info', `Downloaded ${contact.fullName}.vcf`);
+  // Share Contact via native mobile share sheet (AirDrop, WhatsApp, Messages)
+  const handleShareContact = async (contact: ExtractedContact) => {
+    try {
+      const res = await exportContactVCard(contact, 'share');
+      if (res.success && res.method === 'share') {
+        showToast('info', `Shared ${contact.fullName}`);
+      } else if (res.method === 'download') {
+        showToast('info', `Downloaded ${contact.fullName}.vcf`);
+      }
+    } catch (err: any) {
+      showToast('error', 'Share failed: ' + err.message);
+    }
   };
 
   // Discard Contact from Staging
@@ -347,7 +356,7 @@ function MainApp() {
     showToast('info', 'Card discarded');
   };
 
-  // Bulk Save all verified staging contacts
+  // Bulk Save all verified staging contacts & download batch .vcf
   const handleSaveAllStaging = async () => {
     if (stagingContacts.length === 0) return;
 
@@ -365,7 +374,7 @@ function MainApp() {
       exportBatchVCard(storedBatch);
 
       setStagingContacts([]);
-      showToast('success', `Saved and exported all ${storedBatch.length} contacts!`);
+      showToast('success', `Saved! Open the downloaded batch .vcf to import all ${storedBatch.length} contacts.`);
     } catch (err: any) {
       showToast('error', 'Bulk save failed: ' + err.message);
     }
@@ -570,6 +579,15 @@ function MainApp() {
                   </div>
                 </div>
 
+                <div className="contacts-import-info-banner">
+                  <div className="import-banner-icon">
+                    <Info size={16} />
+                  </div>
+                  <div className="import-banner-text">
+                    <strong>Saving to Phone Contacts:</strong> Due to mobile browser security sandboxes, web apps cannot directly write to your phone's address book without user confirmation. Tapping <strong>"Add to Phone Contacts (.vcf)"</strong> downloads the contact card — simply tap the downloaded file in your browser to open Apple Contacts or Google Contacts and tap <strong>"Save"</strong>!
+                  </div>
+                </div>
+
                 <div className="review-cards-grid">
                   {stagingContacts.map((contact) => (
                     <ContactReviewCard
@@ -579,7 +597,7 @@ function MainApp() {
                       onAdjustCrop={handleOpenCropModal}
                       onOpenDuplicateModal={handleOpenDuplicateModal}
                       onSaveToDevice={handleSaveToDevice}
-                      onExportVCard={handleExportVCardOnly}
+                      onShareContact={handleShareContact}
                       onDiscard={handleDiscardContact}
                     />
                   ))}

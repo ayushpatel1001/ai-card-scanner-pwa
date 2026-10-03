@@ -2,6 +2,8 @@
 
 > **Privacy-first, client-side Progressive Web Application (PWA) to digitize physical business cards directly into your smartphone's native address book.**
 
+🚀 **Live Demo:** Try it out deployed at **[https://main.d120adivgcidxs.amplifyapp.com/](https://main.d120adivgcidxs.amplifyapp.com/)**
+
 CardToContact uses your own OpenRouter API key (BYOK) with state-of-the-art vision models (e.g. `google/gemini-2.5-flash`, `anthropic/claude-3.5-sonnet`, `openai/gpt-4o-mini`). It aggressively downscales photos locally, detects single or multiple business cards in a single frame, extracts structured contact entities using **OpenRouter Structured Outputs**, flags duplicates, and exports standard vCards (`.vcf`) containing the physical card crop as the contact avatar.
 
 ---

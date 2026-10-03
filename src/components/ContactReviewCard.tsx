@@ -11,11 +11,11 @@ import {
   Crop,
   Download,
   Trash2,
-  Check,
   AlertTriangle,
   Plus,
   X,
   PhoneCall,
+  Share2,
 } from 'lucide-react';
 import type { ExtractedContact, PhoneType, EmailType } from '../types/contact';
 import { formatContactFullName, stripFormattedSuffix } from '../types/contact';
@@ -26,7 +26,7 @@ interface ContactReviewCardProps {
   onAdjustCrop: (contact: ExtractedContact) => void;
   onOpenDuplicateModal?: (contact: ExtractedContact) => void;
   onSaveToDevice: (contact: ExtractedContact) => void;
-  onExportVCard: (contact: ExtractedContact) => void;
+  onShareContact?: (contact: ExtractedContact) => void;
   onDiscard: (id: string) => void;
 }
 
@@ -36,7 +36,7 @@ export const ContactReviewCard: React.FC<ContactReviewCardProps> = ({
   onAdjustCrop,
   onOpenDuplicateModal,
   onSaveToDevice,
-  onExportVCard,
+  onShareContact,
   onDiscard,
 }) => {
   const handleFieldChange = (field: keyof ExtractedContact, value: any) => {
@@ -468,25 +468,27 @@ export const ContactReviewCard: React.FC<ContactReviewCardProps> = ({
           <span>Discard</span>
         </button>
 
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            onClick={() => onExportVCard(contact)}
-            className="btn-secondary btn-sm"
-            title="Download standard .vcf file with card crop photo"
-          >
-            <Download size={14} />
-            <span>Export vCard</span>
-          </button>
+        <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          {onShareContact && (
+            <button
+              type="button"
+              onClick={() => onShareContact(contact)}
+              className="btn-secondary btn-sm"
+              title="Share via AirDrop, Messages, WhatsApp, etc."
+            >
+              <Share2 size={13} />
+              <span>Share</span>
+            </button>
+          )}
 
           <button
             type="button"
             onClick={() => onSaveToDevice(contact)}
             className="btn-success btn-sm"
-            title="Save to local database and open phone Contacts sheet"
+            title="Download .vcf card — tap the file to open Apple or Google Contacts"
           >
-            <Check size={14} />
-            <span>Save &amp; Add to Phone</span>
+            <Download size={14} />
+            <span>Add to Phone Contacts (.vcf)</span>
           </button>
         </div>
       </div>

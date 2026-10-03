@@ -275,7 +275,7 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
                   <Trash2 size={14} style={{ color: 'var(--accent-rose)' }} />
                 </button>
 
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                   {onSelectContactForEdit && (
                     <button
                       onClick={() => onSelectContactForEdit(contact)}
@@ -288,12 +288,22 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
 
                   <button
                     onClick={() => exportContactVCard(contact, 'share')}
+                    className="btn-secondary btn-sm"
+                    style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}
+                    title="Share via AirDrop, WhatsApp, Messages, etc."
+                  >
+                    <Share2 size={12} />
+                    <span>Share</span>
+                  </button>
+
+                  <button
+                    onClick={() => exportContactVCard(contact, 'download')}
                     className="btn-primary btn-sm"
                     style={{ fontSize: '0.75rem', padding: '0.35rem 0.65rem' }}
-                    title="Export or share native vCard (.vcf) with embedded card photo"
+                    title="Download .vcf card — tap file to add to Apple or Google Contacts"
                   >
-                    <Share2 size={13} />
-                    <span>Share vCard</span>
+                    <Download size={12} />
+                    <span>Add to Contacts (.vcf)</span>
                   </button>
                 </div>
               </div>
