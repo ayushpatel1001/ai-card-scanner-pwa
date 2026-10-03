@@ -26,25 +26,27 @@ export const Header: React.FC<HeaderProps> = ({
             CardToContact
             <span className="brand-badge">PWA</span>
           </h1>
-          <p style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-            <ShieldCheck size={12} style={{ color: 'var(--accent-emerald)' }} />
-            Zero-Egress Client-Side Card Digitizer
+          <p className="brand-subtitle" style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+            <ShieldCheck size={12} style={{ color: 'var(--accent-emerald)', flexShrink: 0 }} />
+            <span>Zero-Egress Card Digitizer</span>
           </p>
         </div>
       </div>
 
       <div className="header-actions">
         <button
+          type="button"
           onClick={onOpenSettings}
           className={`key-status-pill ${isKeyConfigured ? 'connected' : 'disconnected'}`}
           title={isKeyConfigured ? 'OpenRouter API Key Connected' : 'Click to configure your OpenRouter API Key'}
           aria-label="OpenRouter key status"
         >
-          <Key size={13} />
-          <span>{isKeyConfigured ? 'BYOK Ready' : 'Set API Key'}</span>
+          <Key size={13} style={{ flexShrink: 0 }} />
+          <span className="key-pill-text">{isKeyConfigured ? 'BYOK Ready' : 'Set API Key'}</span>
         </button>
 
         <button
+          type="button"
           onClick={onToggleTheme}
           className="icon-btn"
           title={`Switch to ${settings.theme === 'dark' ? 'light' : 'dark'} mode`}
@@ -54,6 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
 
         <button
+          type="button"
           onClick={onOpenSettings}
           className="icon-btn"
           title="Settings & OpenRouter BYOK"

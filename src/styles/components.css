@@ -513,7 +513,7 @@
 .search-input-wrap {
   position: relative;
   flex: 1;
-  min-width: 240px;
+  min-width: 180px;
 }
 
 .search-input-wrap svg {
@@ -530,7 +530,7 @@
 
 .history-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.25rem;
 }
 
@@ -664,4 +664,17 @@
   flex-shrink: 0;
   margin-top: 2px;
 }
+
+/* Prevent iOS Safari from auto-zooming inputs when focused */
+@media (max-width: 768px) {
+  input,
+  select,
+  textarea,
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 16px !important;
+  }
+}
+
 

@@ -15,6 +15,8 @@ import {
   PhoneCall,
   Building2,
   Briefcase,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import type { AppSettings, NameDisplayFormat } from '../types/contact';
 import { formatContactFullName } from '../types/contact';
@@ -31,6 +33,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onSaveSettings,
   onClose,
 }) => {
+  const [theme, setTheme] = useState<'dark' | 'light'>(settings.theme || 'dark');
   const [apiKey, setApiKey] = useState(settings.openRouterApiKey);
   const [showKey, setShowKey] = useState(false);
   const [modelId, setModelId] = useState(settings.modelId);
@@ -41,6 +44,16 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const [appendCompany, setAppendCompany] = useState(settings.appendCompanyToName ?? true);
   const [appendDesignation, setAppendDesignation] = useState(settings.appendDesignationToName ?? false);
   const [nameFormat, setNameFormat] = useState<NameDisplayFormat>(settings.nameDisplayFormat || 'parentheses');
+
+  const handleThemeChange = (newTheme: 'dark' | 'light') => {
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+  };
+
+  const handleClose = () => {
+    document.documentElement.setAttribute('data-theme', settings.theme);
+    onClose();
+  };
 
   const [testing, setTesting] = useState(false);
   const [testResult, setTestResult] = useState<OpenRouterKeyInfo | null>(null);
@@ -69,6 +82,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const handleSave = () => {
     onSaveSettings({
       ...settings,
+      theme,
       openRouterApiKey: apiKey.trim(),
       modelId: isCustomModel ? customModelId.trim() || 'google/gemini-2.5-flash' : modelId,
       customModelId: customModelId.trim(),
@@ -94,14 +108,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   );
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div className="modal-backdrop" onClick={handleClose}>
       <div className="modal-content" style={{ maxWidth: '620px' }} onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Key size={18} style={{ color: 'var(--accent-primary)' }} />
             OpenRouter BYOK &amp; Scanner Settings
           </h3>
-          <button onClick={onClose} className="icon-btn" aria-label="Close settings">
+          <button type="button" onClick={handleClose} className="icon-btn" aria-label="Close settings">
             <X size={18} />
           </button>
         </div>
@@ -268,6 +282,70 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </span>
               </div>
             )}
+          </div>
+
+          {/* App Appearance & Theme (Night Mode & Day Mode) */}
+          <div
+            style={{
+              borderTop: '1px solid var(--border-subtle)',
+              paddingTop: '1.25rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.75rem',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, fontSize: '0.85rem' }}>
+              {theme === 'dark' ? (
+                <Moon size={14} style={{ color: 'var(--accent-primary)' }} />
+              ) : (
+                <Sun size={14} style={{ color: 'var(--accent-amber)' }} />
+              )}
+              App Appearance (Night &amp; Day Mode)
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+              <button
+                type="button"
+                onClick={() => handleThemeChange('dark')}
+                className={`btn-secondary ${theme === 'dark' ? 'active-theme-choice' : ''}`}
+                style={{
+                  padding: '0.65rem 0.85rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  background: theme === 'dark' ? 'rgba(99, 102, 241, 0.2)' : 'var(--bg-secondary)',
+                  borderColor: theme === 'dark' ? 'var(--accent-primary)' : 'var(--border-subtle)',
+                  color: theme === 'dark' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                  fontWeight: theme === 'dark' ? 600 : 500,
+                  fontSize: '0.85rem',
+                }}
+              >
+                <Moon size={15} />
+                <span>Night (Dark)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleThemeChange('light')}
+                className={`btn-secondary ${theme === 'light' ? 'active-theme-choice' : ''}`}
+                style={{
+                  padding: '0.65rem 0.85rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.5rem',
+                  background: theme === 'light' ? 'rgba(99, 102, 241, 0.15)' : 'var(--bg-secondary)',
+                  borderColor: theme === 'light' ? 'var(--accent-primary)' : 'var(--border-subtle)',
+                  color: theme === 'light' ? 'var(--text-primary)' : 'var(--text-secondary)',
+                  fontWeight: theme === 'light' ? 600 : 500,
+                  fontSize: '0.85rem',
+                }}
+              >
+                <Sun size={15} />
+                <span>Day (Light)</span>
+              </button>
+            </div>
           </div>
 
           {/* Caller ID & Name Formatting for Phone Calls */}
@@ -527,10 +605,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
 
         <div className="modal-footer">
-          <button onClick={onClose} className="btn-secondary">
+          <button type="button" onClick={handleClose} className="btn-secondary">
             Cancel
           </button>
-          <button onClick={handleSave} className="btn-primary">
+          <button type="button" onClick={handleSave} className="btn-primary">
             Save Preferences
           </button>
         </div>
