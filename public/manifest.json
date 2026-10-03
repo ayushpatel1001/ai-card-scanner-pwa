@@ -1,0 +1,18 @@
+{
+  "name": "CardToContact Business Card Scanner",
+  "short_name": "CardToContact",
+  "description": "Privacy-first, client-side business card digitizer and vCard creator",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090d16",
+  "theme_color": "#090d16",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

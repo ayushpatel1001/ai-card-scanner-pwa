@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16" />
+      <stop offset="100%" stop-color="#1e1b4b" />
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="scanBeam" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0" />
+      <stop offset="50%" stop-color="#38bdf8" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="512" height="512" rx="110" fill="url(#bgGrad)" />
+
+  <!-- Business Card Outline -->
+  <rect x="76" y="126" width="360" height="260" rx="24" fill="#0f172a" stroke="url(#cardGrad)" stroke-width="8" filter="url(#glow)" />
+
+  <!-- Avatar Circle on Card -->
+  <circle cx="160" cy="220" r="42" fill="#1e293b" stroke="#6366f1" stroke-width="4" />
+  <circle cx="160" cy="210" r="16" fill="#818cf8" />
+  <path d="M136 248 C136 230, 184 230, 184 248 Z" fill="#818cf8" />
+
+  <!-- Text lines on Card -->
+  <rect x="225" y="195" width="165" height="14" rx="7" fill="#f8fafc" />
+  <rect x="225" y="222" width="120" height="10" rx="5" fill="#38bdf8" />
+  <rect x="225" y="244" width="90" height="8" rx="4" fill="#64748b" />
+
+  <line x1="110" y1="305" x2="402" y2="305" stroke="rgba(255,255,255,0.12)" stroke-width="2" />
+  <rect x="110" y="325" width="130" height="8" rx="4" fill="#94a3b8" />
+  <rect x="270" y="325" width="132" height="8" rx="4" fill="#94a3b8" />
+
+  <!-- Glowing Scanner Line Across Card -->
+  <rect x="66" y="250" width="380" height="6" fill="url(#scanBeam)" filter="url(#glow)" />
+</svg>
